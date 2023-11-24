@@ -1,3 +1,12 @@
+# Hello there! 
+## This is my 2nd SQL query project, thank you for your interest!
+## In this project i wanted to get a few details that i thought may be useful for business needs, like knowing their selling performence and their customers.
+
+##  dataset structure:
+
+<img width="472" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/c3b7b26a-3c83-4346-bc63-f2b8fa021ed8">
+
+
 # Details i wanted to get:
 
 ### 1) how many orders per item?
@@ -14,7 +23,7 @@
 
 
 ## 1)  how many orders per item?
-```
+```ruby
 SELECT i.item_name,
 SUM(o.order_quantity) as quantity_sold
 FROM items i
@@ -27,7 +36,7 @@ ORDER BY quantity_sold DESC
 <img width="350" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/4b4e232c-f9ca-487a-8014-36044e1e6641">
 
 ## 2) top selling items in terms of value
-```
+```ruby
 SELECT i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -40,7 +49,7 @@ ORDER BY value_ DESC
 <img width="394" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/f01a8bee-15b0-4991-a51b-006d1c1270d4">
 
 ## 3)  gender details
-```
+```ruby
 with gends as (
 SELECT gender,
 		SUM(CASE WHEN gender = 'male' THEN (order_quantity*i.item_price) ELSE (order_quantity*i.item_price) END) AS total_value,
@@ -68,7 +77,7 @@ FROM gends
 
 
 ## 4) sales through time, sum by months
-```
+```ruby
 with seasons as (
 SELECT CONCAT(MONTH(order_date), '/', YEAR(order_date)) AS new_date,
 o.order_quantity*i.item_price AS order_value,
@@ -88,7 +97,7 @@ ON i.item_id = o.item_id
 )
 ```
 ### -- to see orders through time:
-```
+```ruby
 SELECT season, new_date,
 SUM(order_value) AS season_sales,
 RANK () OVER (ORDER BY MIN(new_date) ASC) AS date_rank
@@ -101,7 +110,7 @@ ORDER BY MIN(new_date)
 ## 5) top selling items in the BEST season
 
 ### -- to find the best season (its winter, probably because of Christmas):
-```
+```ruby
 with seasons as (
 SELECT CONCAT(MONTH(order_date), '/', YEAR(order_date)) AS new_date,
 o.order_quantity*i.item_price AS order_value,
@@ -130,7 +139,7 @@ ORDER BY season_sales DESC
 
 
 ### -- top 10 selling items on Winter (months 9,10,11):
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity) AS units_sold,
 i.item_price
@@ -145,7 +154,7 @@ ORDER BY units_sold DESC
 <img width="246" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/ff17dd6b-4e69-474c-8879-ccbeedd991c9">
 
 ## 6) top 10 selling items for every gender:
-```
+```ruby
 with ranked_items as (
     SELECT
  i.item_name,
@@ -163,7 +172,7 @@ FROM
 GROUP BY i.item_name, i.item_price, c.gender
 )
 ```
-```
+```ruby
 SELECT
 item_name,
 units_sold,
@@ -176,7 +185,7 @@ WHERE  rnk <= 10
 <img width="283" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/c51c4f61-b4fe-41cc-83fd-4b2e5f48b5ae">
 
 ## 7) orders distribution by week days (and differences between males and females)
-```
+```ruby
  SELECT COUNT( DATENAME(WEEKDAY, order_Date)) as orders_count,
  DATENAME(WEEKDAY, order_Date) as week_day
 FROM orders 
@@ -187,7 +196,7 @@ order by orders_count DESC
 
 
 ### -- orders count difference between males and females
-```
+```ruby
  SELECT COUNT( DATENAME(WEEKDAY, order_Date)) as orders_count,
  DATENAME(WEEKDAY, order_Date) as week_day
 FROM orders o JOIN customers c
@@ -198,7 +207,7 @@ order by orders_count DESC
 ```
 <img width="307" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/dfdaeaa0-4130-4e2e-8a53-e862f06b064a">
 
-```
+```ruby
  SELECT COUNT( DATENAME(WEEKDAY, order_Date)) as orders_count,
  DATENAME(WEEKDAY, order_Date) as week_day
 FROM orders o JOIN customers c
@@ -213,7 +222,7 @@ order by orders_count DESC
 
 ## 8) top selling items by value on every day
 --- top 10 selling items by value on every day
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -226,7 +235,7 @@ ORDER BY value_ DESC
 ```
 <img width="196" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/10fef0e1-28df-4074-b179-24d66ee28ad7">
 
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -239,7 +248,7 @@ ORDER BY value_ DESC
 ```
 <img width="181" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/b48777a5-4acc-46ac-8876-2255028f7eb8">
 
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -252,7 +261,7 @@ ORDER BY value_ DESC
 ```
 <img width="194" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/be422ed2-ad7b-4677-b17d-16d110627f83">
 
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -265,7 +274,7 @@ ORDER BY value_ DESC
 ```
 <img width="195" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/2675cbae-a2d0-468e-b5ce-3d8731ff8b25">
 
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -278,7 +287,7 @@ ORDER BY value_ DESC
 ```
 <img width="195" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/c530175e-80ee-42c5-b787-1febe7641b9f">
 
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -291,7 +300,7 @@ ORDER BY value_ DESC
 ```
 <img width="195" alt="image" src="https://github.com/EranEid24/Orders-query/assets/149265837/af5f072c-fa4f-4763-b94a-6fcbcc72e947">
 
-```
+```ruby
 SELECT TOP 10 i.item_name,
 SUM(o.order_quantity*i.item_price) AS value_
 FROM items i
@@ -306,7 +315,7 @@ ORDER BY value_ DESC
 
 
 ## 9) customers value
-```
+```ruby
 SELECT
 c.gender,
 c.first_name + ' ' + c.last_name AS customer_name,
@@ -332,7 +341,7 @@ total_value DESC
 
 
 ## 10) seasonality for each order size (micro,small, medium, big, mega)
-```
+```ruby
 SELECT DATENAME(weekday, order_date) as day,
 		SUM((CASE WHEN order_quantity < 11 THEN order_quantity END)) AS micro,
 		SUM((CASE WHEN order_quantity BETWEEN 11 AND 20 THEN order_quantity END)) AS small,
@@ -348,7 +357,7 @@ GROUP BY DATENAME(weekday, order_date)
 
 
 ## 11) sales per day (quantity)
-```
+```ruby
 SELECT DATENAME(weekday, order_date) AS day,
 SUM(order_quantity) AS units_sold
 FROM orders 
